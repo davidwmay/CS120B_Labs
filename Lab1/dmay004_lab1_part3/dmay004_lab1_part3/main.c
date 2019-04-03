@@ -2,7 +2,7 @@
 
 int main(void)
 {
-	DDRA = 0x00; PORTA = 0xFF;
+	DDRA = 0x00; PORTA = 0x00;
 	DDRC = 0xFF; PORTC = 0x00;
 	unsigned char tmp1 = 0x00;
 	unsigned char tmp2 = 0x00;
@@ -11,6 +11,7 @@ int main(void)
 	unsigned char cntAvail = 0x00;
 	
 	while(1) {
+		cntAvail = 0x00;
 		tmp1 = PINA & 0x01;
 		tmp2 = PINA & 0x02;
 		tmp3 = PINA & 0x04;
@@ -26,6 +27,9 @@ int main(void)
 		}
 		if (tmp4 == 0x00) {
 			cntAvail = cntAvail + 0x01;
+		}
+		if (cntAvail == 0x00) {
+			cntAvail = cntAvail + 0x80;
 		}
 	PORTC = cntAvail;
 	}
