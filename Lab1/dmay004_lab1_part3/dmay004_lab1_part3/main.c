@@ -1,0 +1,33 @@
+#include <avr/io.h>
+
+int main(void)
+{
+	DDRA = 0x00; PORTA = 0xFF;
+	DDRC = 0xFF; PORTC = 0x00;
+	unsigned char tmp1 = 0x00;
+	unsigned char tmp2 = 0x00;
+	unsigned char tmp3 = 0x00;
+	unsigned char tmp4 = 0x00;
+	unsigned char cntAvail = 0x00;
+	
+	while(1) {
+		tmp1 = PINA & 0x01;
+		tmp2 = PINA & 0x02;
+		tmp3 = PINA & 0x04;
+		tmp4 = PINA & 0x08;
+		if (tmp1 == 0x00) {
+			cntAvail = cntAvail + 0x01;
+		}
+		if (tmp2 == 0x00) {
+			cntAvail = cntAvail + 0x01;
+		}
+		if (tmp3 == 0x00) {
+			cntAvail = cntAvail + 0x01;
+		}
+		if (tmp4 == 0x00) {
+			cntAvail = cntAvail + 0x01;
+		}
+	PORTC = cntAvail;
+	}
+	return 0;
+}
