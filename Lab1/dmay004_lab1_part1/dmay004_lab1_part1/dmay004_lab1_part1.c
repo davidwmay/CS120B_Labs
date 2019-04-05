@@ -1,8 +1,12 @@
+
+
 /*
- * dmay004_lab1_part1.c
+ * Name/Email: David May, dmay004@ucr.edu
+ * Lab Section: 026
+ * Assignment: Lab 1 Exercise 1
  *
  * Created: 4/3/2019 9:47:58 AM
- * Author : ucrcse
+ * I acknowledge all content contained herein, excluding template or example code, is my own original work.
  */ 
 
 #include <avr/io.h>
