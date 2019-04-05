@@ -1,3 +1,11 @@
+/*
+ * Name/Email: David May, dmay004@ucr.edu
+ * Lab Section: 026
+ * Assignment: Lab 1 Exercise 2 and 3
+ *
+ * I acknowledge all content contained herein, excluding template or example code, is my own original work.
+ */ 
+
 #include <avr/io.h>
 
 int main(void)
