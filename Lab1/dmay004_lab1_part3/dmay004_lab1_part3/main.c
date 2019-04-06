@@ -36,9 +36,6 @@ int main(void)
 		if (tmp4 == 0x00) {
 			cntAvail = cntAvail + 0x01;
 		}
-		if (cntAvail == 0x00) {
-			cntAvail = cntAvail + 0x80;
-		}
 		PORTC = cntAvail;
 	}
 	return 0;
