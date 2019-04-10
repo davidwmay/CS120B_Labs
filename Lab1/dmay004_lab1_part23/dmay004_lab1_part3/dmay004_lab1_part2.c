@@ -1,7 +1,7 @@
 /*
  * Name/Email: David May, dmay004@ucr.edu
  * Lab Section: 026
- * Assignment: Lab 1 Exercise 2 and 3
+ * Assignment: Lab 1 Exercise 2
  *
  * I acknowledge all content contained herein, excluding template or example code, is my own original work.
  */ 

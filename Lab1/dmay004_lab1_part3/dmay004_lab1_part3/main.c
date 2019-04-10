@@ -1,7 +1,7 @@
 /*
  * Name/Email: David May, dmay004@ucr.edu
  * Lab Section: 026
- * Assignment: Lab 1 Exercise 3
+ * Assignment: Lab 1 Exercise 2
  *
  * I acknowledge all content contained herein, excluding template or example code, is my own original work.
  */ 
@@ -36,7 +36,10 @@ int main(void)
 		if (tmp4 == 0x00) {
 			cntAvail = cntAvail + 0x01;
 		}
-		PORTC = cntAvail;
+		if (cntAvail == 0x00) {
+			cntAvail = cntAvail + 0x80;
+		}
+	PORTC = cntAvail;
 	}
 	return 0;
 }

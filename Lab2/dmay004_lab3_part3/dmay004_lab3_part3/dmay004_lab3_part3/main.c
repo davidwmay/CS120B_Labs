@@ -29,10 +29,13 @@ int main() {
 		
 	while (1) {
 		tmpOutput = 0x00;
-		
 		tmpSeatBelt = PINA & 0x40;
 		tmpIgnition = PINA & 0x10;
 		tmpDriver = PINA & 0x20;
+		tmp1 = PINA & 0x00;
+		tmp2 = 0x00;
+		tmp3 = 0x00;
+		tmp4 = 0x00;
 		
 		if (GetBit(tmpIgnition, 0) && GetBit(tmpDriver, 0) && (!GetBit(tmpSeatBelt, 0))) {
 			SetBit(tmpOutput, 7, 1);
