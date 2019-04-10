@@ -1,7 +1,7 @@
 /*	Partner 1 Name & E-mail: David May; dmay004@ucr.edu
  *	Partner 2 Name & E-mail: 
  *	Lab Section: 026
- *	Assignment: Lab 3  Exercise 2 
+ *	Assignment: Lab 3  Exercise 3
  *	
  *	I acknowledge all content contained herein, excluding template or example
  *	code, is my own original work.
@@ -13,6 +13,11 @@ unsigned char SetBit(unsigned char x, unsigned char k, unsigned char b) {
 	return (b ? x | (0x01 << k) : x & ~(0x01 << k));
 }
 
+unsigned char GetBit(unsigned char x, unsigned char k) {
+	return ((x & (0x01 << k)) != 0);
+}
+
+
 
 int main() {
 	DDRA = 0x00; PORTA = 0xFF; // output, set depending on PORTC values
@@ -20,8 +25,6 @@ int main() {
 	unsigned char tmpOutput = 0x00;
 		
 	while (1) {
-		tmpOutput = 0x00;
-		
 		if (PINA >= 13) {
 			//light 5-0
 			tmpOutput = SetBit(tmpOutput, 5, 1);
@@ -48,20 +51,14 @@ int main() {
 			tmpOutput = SetBit(tmpOutput, 5, 1);
 			tmpOutput = SetBit(tmpOutput, 4, 1);
 			tmpOutput = SetBit(tmpOutput, 3, 1);
-		} else {
-			tmpOutput = SetBit(tmpOutput, 6, 1);
-			
-			if (PINA >= 3) {
-				//light 5-4
-				tmpOutput = SetBit(tmpOutput, 5, 1);
-				tmpOutput = SetBit(tmpOutput, 4, 1);			
-			} else if (PINA >= 1) {
-				//light 5
-				tmpOutput = SetBit(tmpOutput, 5, 1);
-			}
-			
+		} else if (PINA >= 3) {
+			//light 5-4
+			tmpOutput = SetBit(tmpOutput, 5, 1);
+			tmpOutput = SetBit(tmpOutput, 4, 1);
+		} else if (PINA >= 1) {
+			//light 5
+			tmpOutput = SetBit(tmpOutput, 5, 1);
 		}
-		
 		PORTC = tmpOutput;
 	}
 	

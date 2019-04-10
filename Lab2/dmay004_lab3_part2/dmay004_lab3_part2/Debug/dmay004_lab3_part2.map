@@ -152,7 +152,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000       0xec
+.text           0x00000000       0xf2
  *(.vectors)
  .vectors       0x00000000       0x8c G:/Programs/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega1284/avr51/crtatmega1284.o
                 0x00000000                __vector_default
@@ -244,13 +244,13 @@ END GROUP
                 0x0000009c                __vector_20
                 0x0000009e                . = ALIGN (0x2)
  *(.text.*)
- .text.main     0x0000009e       0x4a main.o
+ .text.main     0x0000009e       0x50 main.o
                 0x0000009e                main
-                0x000000e8                . = ALIGN (0x2)
+                0x000000ee                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000000e8        0x0 g:/programs/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
-                0x000000e8                _exit
-                0x000000e8                exit
+ .fini9         0x000000ee        0x0 g:/programs/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
+                0x000000ee                _exit
+                0x000000ee                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -269,11 +269,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000000e8        0x4 g:/programs/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
+ .fini0         0x000000ee        0x4 g:/programs/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
  *(.fini0)
-                0x000000ec                _etext = .
+                0x000000f2                _etext = .
 
-.data           0x00800100        0x0 load address 0x000000ec
+.data           0x00800100        0x0 load address 0x000000f2
                 [!provide]                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -291,8 +291,8 @@ END GROUP
  *(.bss*)
  *(COMMON)
                 [!provide]                PROVIDE (__bss_end, .)
-                0x000000ec                __data_load_start = LOADADDR (.data)
-                0x000000ec                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000000f2                __data_load_start = LOADADDR (.data)
+                0x000000f2                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800100        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
@@ -371,20 +371,20 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0x95c
+.debug_info     0x00000000      0x885
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x792 G:/Programs/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega1284/avr51/crtatmega1284.o
- .debug_info    0x00000792      0x1ca main.o
+ .debug_info    0x00000792       0xf3 main.o
 
-.debug_abbrev   0x00000000      0x7f9
+.debug_abbrev   0x00000000      0x7d2
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x729 G:/Programs/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega1284/avr51/crtatmega1284.o
- .debug_abbrev  0x00000729       0xd0 main.o
+ .debug_abbrev  0x00000729       0xa9 main.o
 
-.debug_line     0x00000000      0x288
+.debug_line     0x00000000      0x294
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x169 G:/Programs/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega1284/avr51/crtatmega1284.o
- .debug_line    0x00000169      0x11f main.o
+ .debug_line    0x00000169      0x12b main.o
 
 .debug_frame    0x00000000       0x34
  *(.debug_frame)
@@ -396,9 +396,9 @@ END GROUP
  .debug_str     0x00000296      0x161 main.o
                                 0x195 (size before relaxing)
 
-.debug_loc      0x00000000      0x157
+.debug_loc      0x00000000       0x65
  *(.debug_loc)
- .debug_loc     0x00000000      0x157 main.o
+ .debug_loc     0x00000000       0x65 main.o
 
 .debug_macinfo
  *(.debug_macinfo)

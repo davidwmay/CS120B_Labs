@@ -3,29 +3,29 @@ dmay004_lab3_part2.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  00000140  2**0
+  0 .data         00000000  00800100  00800100  00000146  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000000ec  00000000  00000000  00000054  2**1
+  1 .text         000000f2  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  00000140  2**0
+  2 .comment      00000030  00000000  00000000  00000146  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000170  2**2
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000178  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000028  00000000  00000000  000001b0  2**0
+  4 .debug_aranges 00000028  00000000  00000000  000001b8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   0000095c  00000000  00000000  000001d8  2**0
+  5 .debug_info   00000885  00000000  00000000  000001e0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 000007f9  00000000  00000000  00000b34  2**0
+  6 .debug_abbrev 000007d2  00000000  00000000  00000a65  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00000288  00000000  00000000  0000132d  2**0
+  7 .debug_line   00000294  00000000  00000000  00001237  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000034  00000000  00000000  000015b8  2**2
+  8 .debug_frame  00000034  00000000  00000000  000014cc  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    000003f7  00000000  00000000  000015ec  2**0
+  9 .debug_str    000003f7  00000000  00000000  00001500  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000157  00000000  00000000  000019e3  2**0
+ 10 .debug_loc    00000065  00000000  00000000  000018f7  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000018  00000000  00000000  00001b3a  2**0
+ 11 .debug_ranges 00000018  00000000  00000000  0000195c  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -110,7 +110,7 @@ Disassembly of section .text:
   94:	de bf       	out	0x3e, r29	; 62
   96:	cd bf       	out	0x3d, r28	; 61
   98:	02 d0       	rcall	.+4      	; 0x9e <main>
-  9a:	26 c0       	rjmp	.+76     	; 0xe8 <_exit>
+  9a:	29 c0       	rjmp	.+82     	; 0xee <_exit>
 
 0000009c <__bad_interrupt>:
   9c:	b1 cf       	rjmp	.-158    	; 0x0 <__vectors>
@@ -128,118 +128,131 @@ int main() {
 	DDRC = 0xFF; PORTC = 0x00; // input, check to find fuel level 
   a4:	87 b9       	out	0x07, r24	; 7
   a6:	18 b8       	out	0x08, r1	; 8
+			tmpOutput = SetBit(tmpOutput, 6, 1);
+			
+			if (PINA >= 3) {
+				//light 5-4
+				tmpOutput = SetBit(tmpOutput, 5, 1);
+				tmpOutput = SetBit(tmpOutput, 4, 1);			
+  a8:	90 e7       	ldi	r25, 0x70	; 112
+			} else if (PINA >= 1) {
+				//light 5
+				tmpOutput = SetBit(tmpOutput, 5, 1);
+  aa:	20 e6       	ldi	r18, 0x60	; 96
 	unsigned char tmpOutput = 0x00;
-  a8:	80 e0       	ldi	r24, 0x00	; 0
 		
 	while (1) {
+		tmpOutput = 0x00;
+		
 		if (PINA >= 13) {
-  aa:	90 b1       	in	r25, 0x00	; 0
-  ac:	9d 30       	cpi	r25, 0x0D	; 13
-  ae:	c8 f4       	brcc	.+50     	; 0xe2 <main+0x44>
+  ac:	80 b1       	in	r24, 0x00	; 0
+  ae:	8d 30       	cpi	r24, 0x0D	; 13
+  b0:	88 f4       	brcc	.+34     	; 0xd4 <main+0x36>
 			tmpOutput = SetBit(tmpOutput, 4, 1);
 			tmpOutput = SetBit(tmpOutput, 3, 1);
 			tmpOutput = SetBit(tmpOutput, 2, 1);
 			tmpOutput = SetBit(tmpOutput, 1, 1);
 			tmpOutput = SetBit(tmpOutput, 0, 1);
 		} else if (PINA >= 10) {
-  b0:	90 b1       	in	r25, 0x00	; 0
-  b2:	9a 30       	cpi	r25, 0x0A	; 10
-  b4:	10 f0       	brcs	.+4      	; 0xba <main+0x1c>
- */ 
-
-#include <avr/io.h>
-
-unsigned char SetBit(unsigned char x, unsigned char k, unsigned char b) {
-	return (b ? x | (0x01 << k) : x & ~(0x01 << k));
-  b6:	8e 63       	ori	r24, 0x3E	; 62
-  b8:	15 c0       	rjmp	.+42     	; 0xe4 <main+0x46>
+  b2:	80 b1       	in	r24, 0x00	; 0
+  b4:	8a 30       	cpi	r24, 0x0A	; 10
+  b6:	80 f4       	brcc	.+32     	; 0xd8 <main+0x3a>
 			tmpOutput = SetBit(tmpOutput, 5, 1);
 			tmpOutput = SetBit(tmpOutput, 4, 1);
 			tmpOutput = SetBit(tmpOutput, 3, 1);
 			tmpOutput = SetBit(tmpOutput, 2, 1);
 			tmpOutput = SetBit(tmpOutput, 1, 1);
  		} else if (PINA >= 7) {
-  ba:	90 b1       	in	r25, 0x00	; 0
-  bc:	97 30       	cpi	r25, 0x07	; 7
-  be:	10 f0       	brcs	.+4      	; 0xc4 <main+0x26>
- */ 
-
-#include <avr/io.h>
-
-unsigned char SetBit(unsigned char x, unsigned char k, unsigned char b) {
-	return (b ? x | (0x01 << k) : x & ~(0x01 << k));
-  c0:	8c 63       	ori	r24, 0x3C	; 60
-  c2:	10 c0       	rjmp	.+32     	; 0xe4 <main+0x46>
+  b8:	80 b1       	in	r24, 0x00	; 0
+  ba:	87 30       	cpi	r24, 0x07	; 7
+  bc:	78 f4       	brcc	.+30     	; 0xdc <main+0x3e>
 			//light 5-2
 			tmpOutput = SetBit(tmpOutput, 5, 1);
 			tmpOutput = SetBit(tmpOutput, 4, 1);
 			tmpOutput = SetBit(tmpOutput, 3, 1);
 			tmpOutput = SetBit(tmpOutput, 2, 1);
 		} else if (PINA >= 5) {
-  c4:	90 b1       	in	r25, 0x00	; 0
-  c6:	95 30       	cpi	r25, 0x05	; 5
-  c8:	10 f0       	brcs	.+4      	; 0xce <main+0x30>
- */ 
-
-#include <avr/io.h>
-
-unsigned char SetBit(unsigned char x, unsigned char k, unsigned char b) {
-	return (b ? x | (0x01 << k) : x & ~(0x01 << k));
-  ca:	88 63       	ori	r24, 0x38	; 56
-  cc:	0b c0       	rjmp	.+22     	; 0xe4 <main+0x46>
-		} else if (PINA >= 5) {
-			//light 5-3
-			tmpOutput = SetBit(tmpOutput, 5, 1);
+  be:	80 b1       	in	r24, 0x00	; 0
+  c0:	85 30       	cpi	r24, 0x05	; 5
+  c2:	70 f4       	brcc	.+28     	; 0xe0 <main+0x42>
 			tmpOutput = SetBit(tmpOutput, 4, 1);
 			tmpOutput = SetBit(tmpOutput, 3, 1);
-		} else if (PINA >= 3) {
-  ce:	90 b1       	in	r25, 0x00	; 0
-  d0:	93 30       	cpi	r25, 0x03	; 3
-  d2:	10 f0       	brcs	.+4      	; 0xd8 <main+0x3a>
- */ 
-
-#include <avr/io.h>
-
-unsigned char SetBit(unsigned char x, unsigned char k, unsigned char b) {
-	return (b ? x | (0x01 << k) : x & ~(0x01 << k));
-  d4:	80 63       	ori	r24, 0x30	; 48
-  d6:	06 c0       	rjmp	.+12     	; 0xe4 <main+0x46>
-			tmpOutput = SetBit(tmpOutput, 3, 1);
-		} else if (PINA >= 3) {
-			//light 5-4
-			tmpOutput = SetBit(tmpOutput, 5, 1);
-			tmpOutput = SetBit(tmpOutput, 4, 1);
-		} else if (PINA >= 1) {
-  d8:	90 b1       	in	r25, 0x00	; 0
-  da:	99 23       	and	r25, r25
-  dc:	19 f0       	breq	.+6      	; 0xe4 <main+0x46>
- */ 
-
-#include <avr/io.h>
-
-unsigned char SetBit(unsigned char x, unsigned char k, unsigned char b) {
-	return (b ? x | (0x01 << k) : x & ~(0x01 << k));
-  de:	80 62       	ori	r24, 0x20	; 32
-  e0:	01 c0       	rjmp	.+2      	; 0xe4 <main+0x46>
+		} else {
+			tmpOutput = SetBit(tmpOutput, 6, 1);
+			
+			if (PINA >= 3) {
+  c4:	80 b1       	in	r24, 0x00	; 0
+  c6:	83 30       	cpi	r24, 0x03	; 3
+  c8:	68 f4       	brcc	.+26     	; 0xe4 <main+0x46>
+				//light 5-4
+				tmpOutput = SetBit(tmpOutput, 5, 1);
+				tmpOutput = SetBit(tmpOutput, 4, 1);			
+			} else if (PINA >= 1) {
+  ca:	80 b1       	in	r24, 0x00	; 0
+  cc:	88 23       	and	r24, r24
+  ce:	61 f0       	breq	.+24     	; 0xe8 <main+0x4a>
+				//light 5
+				tmpOutput = SetBit(tmpOutput, 5, 1);
+  d0:	82 2f       	mov	r24, r18
+  d2:	0b c0       	rjmp	.+22     	; 0xea <main+0x4c>
 			tmpOutput = SetBit(tmpOutput, 5, 1);
 			tmpOutput = SetBit(tmpOutput, 4, 1);
 			tmpOutput = SetBit(tmpOutput, 3, 1);
 			tmpOutput = SetBit(tmpOutput, 2, 1);
 			tmpOutput = SetBit(tmpOutput, 1, 1);
 			tmpOutput = SetBit(tmpOutput, 0, 1);
-  e2:	8f e3       	ldi	r24, 0x3F	; 63
-			tmpOutput = SetBit(tmpOutput, 4, 1);
-		} else if (PINA >= 1) {
-			//light 5
+  d4:	8f e3       	ldi	r24, 0x3F	; 63
+  d6:	09 c0       	rjmp	.+18     	; 0xea <main+0x4c>
+			//light 5-1
 			tmpOutput = SetBit(tmpOutput, 5, 1);
+			tmpOutput = SetBit(tmpOutput, 4, 1);
+			tmpOutput = SetBit(tmpOutput, 3, 1);
+			tmpOutput = SetBit(tmpOutput, 2, 1);
+			tmpOutput = SetBit(tmpOutput, 1, 1);
+  d8:	8e e3       	ldi	r24, 0x3E	; 62
+  da:	07 c0       	rjmp	.+14     	; 0xea <main+0x4c>
+ 		} else if (PINA >= 7) {
+			//light 5-2
+			tmpOutput = SetBit(tmpOutput, 5, 1);
+			tmpOutput = SetBit(tmpOutput, 4, 1);
+			tmpOutput = SetBit(tmpOutput, 3, 1);
+			tmpOutput = SetBit(tmpOutput, 2, 1);
+  dc:	8c e3       	ldi	r24, 0x3C	; 60
+  de:	05 c0       	rjmp	.+10     	; 0xea <main+0x4c>
+		} else if (PINA >= 5) {
+			//light 5-3
+			tmpOutput = SetBit(tmpOutput, 5, 1);
+			tmpOutput = SetBit(tmpOutput, 4, 1);
+			tmpOutput = SetBit(tmpOutput, 3, 1);
+  e0:	88 e3       	ldi	r24, 0x38	; 56
+  e2:	03 c0       	rjmp	.+6      	; 0xea <main+0x4c>
+			tmpOutput = SetBit(tmpOutput, 6, 1);
+			
+			if (PINA >= 3) {
+				//light 5-4
+				tmpOutput = SetBit(tmpOutput, 5, 1);
+				tmpOutput = SetBit(tmpOutput, 4, 1);			
+  e4:	89 2f       	mov	r24, r25
+  e6:	01 c0       	rjmp	.+2      	; 0xea <main+0x4c>
+			//light 5-3
+			tmpOutput = SetBit(tmpOutput, 5, 1);
+			tmpOutput = SetBit(tmpOutput, 4, 1);
+			tmpOutput = SetBit(tmpOutput, 3, 1);
+		} else {
+			tmpOutput = SetBit(tmpOutput, 6, 1);
+  e8:	80 e4       	ldi	r24, 0x40	; 64
+				tmpOutput = SetBit(tmpOutput, 5, 1);
+			}
+			
 		}
+		
 		PORTC = tmpOutput;
-  e4:	88 b9       	out	0x08, r24	; 8
+  ea:	88 b9       	out	0x08, r24	; 8
 	}
-  e6:	e1 cf       	rjmp	.-62     	; 0xaa <main+0xc>
+  ec:	df cf       	rjmp	.-66     	; 0xac <main+0xe>
 
-000000e8 <_exit>:
-  e8:	f8 94       	cli
+000000ee <_exit>:
+  ee:	f8 94       	cli
 
-000000ea <__stop_program>:
-  ea:	ff cf       	rjmp	.-2      	; 0xea <__stop_program>
+000000f0 <__stop_program>:
+  f0:	ff cf       	rjmp	.-2      	; 0xf0 <__stop_program>
