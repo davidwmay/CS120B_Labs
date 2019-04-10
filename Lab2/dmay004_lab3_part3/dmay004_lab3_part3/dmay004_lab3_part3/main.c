@@ -39,12 +39,6 @@ int main() {
 				tmpOutput = SetBit(tmpOutput, 7, 1);
 			}
 		}
-
-		//if (!GetBit(tmpSeatBelt, 0)) {
-		//	if (GetBit(tmpIgnition, 0) && GetBit(tmpDriver, 0)) {
-		//		tmpOutput = SetBit(tmpOutput, 7, 1);
-		//	}
-		//}
 		
 		tmpInput = 0x0F & PINA;
 		
