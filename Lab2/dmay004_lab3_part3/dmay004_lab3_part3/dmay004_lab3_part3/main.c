@@ -19,9 +19,10 @@ unsigned char GetBit(unsigned char x, unsigned char k) {
 
 
 int main() {
-	DDRA = 0x00; PORTA = 0xFF; // output, set depending on PORTC values
-	DDRC = 0xFF; PORTC = 0x00; // input, check to find fuel level 
+	DDRA = 0x00; PORTA = 0xFF; // input
+	DDRC = 0xFF; PORTC = 0x00; // output
 	unsigned char tmpOutput = 0x00;
+	unsigned char tmpInput = 0x00;
 	unsigned char tmpSeatBelt = 0x00;
 	unsigned char tmpIgnition = 0x00;
 	unsigned char tmpDriver = 0x00;
@@ -32,16 +33,22 @@ int main() {
 		tmpSeatBelt = PINA & 0x40;
 		tmpIgnition = PINA & 0x10;
 		tmpDriver = PINA & 0x20;
-		tmp1 = PINA & 0x00;
-		tmp2 = 0x00;
-		tmp3 = 0x00;
-		tmp4 = 0x00;
-		
-		if (GetBit(tmpIgnition, 0) && GetBit(tmpDriver, 0) && (!GetBit(tmpSeatBelt, 0))) {
-			SetBit(tmpOutput, 7, 1);
+
+		if (tmpSeatBelt == 0x00) {
+			if ((tmpIgnition != 0x00) && (tmpDriver != 0x00)) {
+				tmpOutput = SetBit(tmpOutput, 7, 1);
+			}
 		}
+
+		//if (!GetBit(tmpSeatBelt, 0)) {
+		//	if (GetBit(tmpIgnition, 0) && GetBit(tmpDriver, 0)) {
+		//		tmpOutput = SetBit(tmpOutput, 7, 1);
+		//	}
+		//}
 		
-		if (PINA >= 13 && PINA <= 15) {
+		tmpInput = 0x0F & PINA;
+		
+		if (tmpInput >= 13) {
 			//light 5-0
 			tmpOutput = SetBit(tmpOutput, 5, 1);
 			tmpOutput = SetBit(tmpOutput, 4, 1);
@@ -49,38 +56,34 @@ int main() {
 			tmpOutput = SetBit(tmpOutput, 2, 1);
 			tmpOutput = SetBit(tmpOutput, 1, 1);
 			tmpOutput = SetBit(tmpOutput, 0, 1);
-		} else if (PINA >= 10 && PINA <= 15) {
+		} else if (tmpInput >= 10) {
 			//light 5-1
 			tmpOutput = SetBit(tmpOutput, 5, 1);
 			tmpOutput = SetBit(tmpOutput, 4, 1);
 			tmpOutput = SetBit(tmpOutput, 3, 1);
 			tmpOutput = SetBit(tmpOutput, 2, 1);
 			tmpOutput = SetBit(tmpOutput, 1, 1);
- 		} else if (PINA >= 7 && PINA <= 15) {
+		} else if (tmpInput >= 7) {
 			//light 5-2
 			tmpOutput = SetBit(tmpOutput, 5, 1);
 			tmpOutput = SetBit(tmpOutput, 4, 1);
 			tmpOutput = SetBit(tmpOutput, 3, 1);
 			tmpOutput = SetBit(tmpOutput, 2, 1);
-		} else if (PINA >= 5 && PINA <= 15) {
+		} else if (tmpInput >= 5) {
 			//light 5-3
 			tmpOutput = SetBit(tmpOutput, 5, 1);
 			tmpOutput = SetBit(tmpOutput, 4, 1);
 			tmpOutput = SetBit(tmpOutput, 3, 1);
-		} else {
+		} else if (tmpInput <= 4) {
+			//light 5-4 + 6
 			tmpOutput = SetBit(tmpOutput, 6, 1);
-			
-			if (PINA >= 3) {
-				//light 5-4
+			if (tmpInput >= 3) {
 				tmpOutput = SetBit(tmpOutput, 5, 1);
-				tmpOutput = SetBit(tmpOutput, 4, 1);			
-			} else if (PINA >= 1 && PINA <= 15) {
-				//light 5
+				tmpOutput = SetBit(tmpOutput, 4, 1);
+			} else if (tmpInput >= 1) {
 				tmpOutput = SetBit(tmpOutput, 5, 1);
 			}
-			
 		}
-		
 		PORTC = tmpOutput;
 	}
 	
