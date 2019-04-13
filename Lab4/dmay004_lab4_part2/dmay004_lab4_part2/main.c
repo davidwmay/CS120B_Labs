@@ -1,4 +1,5 @@
-/*	Partner 1 Name & E-mail: David May; dmay004@ucr.edu
+/*	
+ *	Partner 1 Name & E-mail: David May; dmay004@ucr.edu
  *	Partner 2 Name & E-mail: Erin Wong; ewong012@ucr.edu
  *	Lab Section: 026
  *	Assignment: Lab 4 Exercise 2
@@ -9,35 +10,55 @@
 
 #include <avr/io.h>
 
-enum States{start, ON1, ON2} state;
+enum States{start, increment, decrement, reset} state;
 
-unsigned char tmpA = 0x00;
+unsigned char incCheck = 0x00;
+unsigned char decCheck = 0x00;
+
 unsigned char tmpB = 0x00;
+unsigned int checkRst = 0;
+unsigned int checkRst2 = 0;
+unsigned int rstCheck = 0;
 
-void sequence(){
-	tmpA = PINA & 0x01;
+void sequence() {
+	incCheck = PINA & 0x01;
+	decCheck = PINA & 0x02;
 
-	switch (state){
+	switch (state) {
 		case start:
-		state = ON1;
+		if (incCheck) {
+			state = increment;
+			checkRst = 1;
+		} else if (decCheck) {
+			state = decrement;
+			checkRst2 = 1;
+		} else {
+			state = start;
+		}
 		break;
-		
-		case ON1:
-		if(tmpA){
-			state = ON2;
-		}
-		else if (!tmpA){
-			state = ON1;
+
+		case increment:
+		if (checkRst2) {
+			state = reset;
+		} else if (incCheck) {
+			state = increment;
+		} else if (decCheck) {
+			state = decrement;
 		}
 		break;
+
+		case decrement:
+		if (checkRst) {
+			state = reset;
+		} else if (incCheck) {
+			state = increment;
+		} else if (decCheck) {
+			state = decrement;
+		}
+ 		break;
 		
-		case ON2:
-		if(tmpA){
-			state = ON1;
-		}
-		else if(!tmpA){
-			state = ON2;
-		}
+		case reset:
+		state = reset;
 		break;
 		
 		default:
@@ -45,22 +66,35 @@ void sequence(){
 		break;
 	}
 	
-	switch (state){
+	switch (state) {
 		case start:
+		tmpB = 0x07;
 		break;
 		
-		case ON1:
-		tmpB = 0x01;
-		break;
+		case increment:
+		if (tmpB == 9) {
+			break;
+		} else {
+			tmpB += 0x01;
+			break;
+		}
 		
-		case ON2:
-		tmpB = 0x02;
+		case decrement:
+		if (tmpB == 0) {
+			break;
+		} else {
+			tmpB -= 0x01;
+			break;
+		}
+		
+		case reset:
+		tmpB = 0x00;
 		break;
 		
 		default:
 		break;
 	}
-	
+
 	PORTB = tmpB;
 }
 
@@ -71,9 +105,11 @@ int main() {
 	DDRB = 0xFF; PORTB = 0x00;
 	
 	tmpB = 0x00;
+	incCheck = 0x00;
+	decCheck = 0x00;
+	rstCheck = 0;
 	state = start;
-	while (1)
-	{
+	while (1) {
 		sequence();
 	}
 	return 0;
