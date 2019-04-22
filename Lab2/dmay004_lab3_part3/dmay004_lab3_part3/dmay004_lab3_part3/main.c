@@ -1,5 +1,5 @@
 /*	Partner 1 Name & E-mail: David May; dmay004@ucr.edu
- *	Partner 2 Name & E-mail: 
+ *	Partner 2 Name & E-mail: Erin Wong; ewong012@ucr.edu
  *	Lab Section: 026
  *	Assignment: Lab 3  Exercise 3
  *	
